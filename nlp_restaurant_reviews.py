@@ -28,25 +28,24 @@ cv = CountVectorizer(max_features = 1500)
 X = cv.fit_transform(corpus).toarray()
 y = dataset.iloc[:, 1].values
 
-# Splitting the dataset into the Training set and Test set
+#split into training and test sets
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20, random_state = 0)
 
-# Training the Naive Bayes model on the Training set
+#NB model on the training set
 from sklearn.naive_bayes import GaussianNB
 classifier = GaussianNB()
 classifier.fit(X_train, y_train)
 
-# Predicting the Test set results
+#predict using test set (20%) of data
 y_pred = classifier.predict(X_test)
 
-# Making the Confusion Matrix
+#generate confusion matrix
 from sklearn.metrics import confusion_matrix, accuracy_score
 cm = confusion_matrix(y_test, y_pred)
 
-
+#function to test a new review
 def predict(new_review):   
-
     new_review = re.sub("[^a-zA-Z]", " ", new_review)
     new_review = new_review.lower().split()
     new_review = [ps.stem(word) for word in new_review if word not in set(stopwords.words("english"))]   
